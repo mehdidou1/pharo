@@ -5,8 +5,9 @@ A Ring definition has a name, properties and knows its environment
 Class {
 	#name : 'RGObject',
 	#superclass : 'Object',
+	#traits : 'TProperties - {#propertyAt:ifPresent:. #propertyAt:ifPresent:ifAbsent:. #propertyAt:ifPresent:ifAbsentPut:}',
+	#classTraits : 'TProperties classTrait',
 	#instVars : [
-		'properties',
 		'name',
 		'parent'
 	],
@@ -477,8 +478,16 @@ RGObject >> properties [
 	^ properties ifNil: [ properties := IdentityDictionary new ]
 ]
 
+{ #category : 'accessing' }
+RGObject >> propertyAt: propertyKey [
+
+	^ self properties at: propertyKey  ifAbsent: [ nil ].
+]
+
 { #category : 'properties' }
 RGObject >> propertyNamed: propertyName [
+
+	self deprecated: 'use propertyAt: instead' on: '30/04/2026' in: #pharo14.
 
 	^ self
 		propertyNamed: propertyName
@@ -488,6 +497,8 @@ RGObject >> propertyNamed: propertyName [
 { #category : 'properties' }
 RGObject >> propertyNamed: annotationName ifAbsent: exceptionBlock [
 
+	self deprecated: 'use propertyAt:ifAbsent: instead' on: '30/04/2026' in: #pharo14.
+
 	^ self properties
 			at: annotationName
 			ifAbsent: [ exceptionBlock value ]
@@ -496,6 +507,8 @@ RGObject >> propertyNamed: annotationName ifAbsent: exceptionBlock [
 { #category : 'properties' }
 RGObject >> propertyNamed: annotationName ifAbsentPut: blockValue [
 
+	self deprecated: 'use propertyAt:ifAbsentPut: instead' on: '30/04/2026' in: #pharo14.
+
 	^ self properties
 		at: annotationName
 		ifAbsentPut: blockValue
@@ -503,6 +516,8 @@ RGObject >> propertyNamed: annotationName ifAbsentPut: blockValue [
 
 { #category : 'properties' }
 RGObject >> propertyNamed: annotationName put: value [
+
+	self deprecated: 'use propertyAt:put: instead' on: '30/04/2026' in: #pharo14.
 
 	self properties
 		at: annotationName
@@ -565,8 +580,16 @@ RGObject >> pvtUnresolvedProperties [
 	^ self pvtResolvableProperties select: [:each | each value isRingResolved not ] thenCollect: #key
 ]
 
+{ #category : 'accessing' }
+RGObject >> removeProperty: propertyKey [ 
+	(self properties hasProperty: propertyKey ) ifTrue: [ 
+		self properties removeKey: propertyKey ]
+]
+
 { #category : 'properties' }
 RGObject >> removePropertyNamed: propertyName [
+
+	self deprecated: 'use removeProperty: instead' on: '30/04/2026' in: #pharo14.
 
 	(self hasProperty: propertyName) ifTrue: [
 		properties removeKey: propertyName ]
