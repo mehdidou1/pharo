@@ -97,6 +97,11 @@ CoEntry >> browseCompletionItem [
 	self subclassResponsibility
 ]
 
+{ #category : 'matching' }
+CoEntry >> completionMatchText [
+    ^ self contents
+]
+
 { #category : 'accessing' }
 CoEntry >> contents [
 	^ contents

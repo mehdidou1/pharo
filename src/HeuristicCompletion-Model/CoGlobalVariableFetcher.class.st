@@ -17,12 +17,28 @@ CoGlobalVariableFetcher >> completionClass: aClass [
 
 { #category : 'enumerating' }
 CoGlobalVariableFetcher >> entriesDo: aBlock [
+    self systemNavigation
+        allGlobalNamesStartingWith: filter completionString
+        do: [ :e | | prefix |
+            prefix := self inferPrefixFrom: e.
 
-	self systemNavigation
-		allGlobalNamesStartingWith: filter completionString
-		do: [ :e |
-				aBlock value: ((CoGlobalEntry contents: e node: astNode)
-						 fetcherName: self class name;
-						 yourself) ]
-		caseSensitive: NECPreferences caseSensitive
+            aBlock value: (
+                (NECPrefixExpandableGlobalEntry
+                    contents: e
+                    node: astNode
+                    implicitPrefix: prefix)
+                        fetcherName: self class name;
+                        yourself)
+        ]
+        caseSensitive: NECPreferences caseSensitive
+]
+
+{ #category : 'enumerating' }
+CoGlobalVariableFetcher >> inferPrefixFrom: aString [
+    2 to: aString size do: [ :i |
+        (aString at: i) isUppercase ifTrue: [
+            ^ aString copyFrom: 1 to: i - 1
+        ]
+    ].
+    ^ ''
 ]
