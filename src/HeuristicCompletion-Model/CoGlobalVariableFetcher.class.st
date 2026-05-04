@@ -21,9 +21,8 @@ CoGlobalVariableFetcher >> completionClass: aClass [
 CoGlobalVariableFetcher >> entriesDo: aBlock [
 	|prefix|
 	prefix := self inferPrefix.
-
 	self systemNavigation
-		allGlobalNamesStartingWith: filter completionString
+		allGlobalNamesStartingWith: prefix , filter completionString
 		do: [ :e |
 				aBlock value: ((NECPrefixExpandableGlobalEntry contents: e node: astNode implicitPrefix: prefix)
 						 fetcherName: self class name;
