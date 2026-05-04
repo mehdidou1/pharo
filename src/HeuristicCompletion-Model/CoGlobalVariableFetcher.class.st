@@ -30,15 +30,34 @@ CoGlobalVariableFetcher >> entriesDo: aBlock [
 ]
 
 { #category : 'enumerating' }
-CoGlobalVariableFetcher >> inferPrefix [ 
-	| prefixes |
-	prefixes := Dictionary new.
-	completionClass package definedClasses do: [ :cls | 
-			|prefix|
-		prefix := self inferPrefixFromClass: cls name. 
-			prefix = '' 
-				ifFalse: [ prefixes at: prefix put: (( prefixes at: prefix ifAbsent: [ 0 ] ) + 1)]
-		 ]
+CoGlobalVariableFetcher >> inferPrefix [
+    | prefixes baseName packages |
+
+    prefixes := Dictionary new.
+
+    baseName := completionClass package name copyUpTo: $-.
+
+    packages := PackageOrganizer default packages select: [ :pkg |
+        pkg name beginsWith: baseName , '-'
+    ].
+
+    packages do: [ :pkg |
+        pkg definedClasses do: [ :cls |
+            | prefix |
+
+            prefix := self inferPrefixFromClass: cls name.
+
+            prefix isEmpty ifFalse: [
+                prefixes
+                    at: prefix
+                    put: ((prefixes at: prefix ifAbsent: [ 0 ]) + 1)
+            ].
+        ].
+    ].
+
+	
+
+    ^ (prefixes associations sorted: [ :a :b | a value > b value ]) first key
 ]
 
 { #category : 'enumerating' }

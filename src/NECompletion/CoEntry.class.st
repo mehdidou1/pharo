@@ -98,10 +98,10 @@ CoEntry >> browseCompletionItem [
 ]
 
 { #category : 'matching' }
-CoEntry >> completionMatchText [ [
+CoEntry >> completionMatchText [ 
 
 	^ self contents
-]
+
 ]
 
 { #category : 'accessing' }
