@@ -101,7 +101,6 @@ CoEntry >> browseCompletionItem [
 CoEntry >> completionMatchText [ 
 
 	^ self contents
-
 ]
 
 { #category : 'accessing' }

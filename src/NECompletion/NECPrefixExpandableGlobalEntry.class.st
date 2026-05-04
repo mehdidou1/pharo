@@ -10,13 +10,12 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-NECPrefixExpandableGlobalEntry class >> contents: aString node: aNode implicitPrefix: aPrefix [ [
+NECPrefixExpandableGlobalEntry class >> contents: aString node: aNode implicitPrefix: aPrefix [ 
 
 	^ self new
 		contents: aString node: aNode;
 		implicitPrefix: aPrefix;
 		yourself
-]
 ]
 
 { #category : 'matching' }
@@ -32,15 +31,13 @@ NECPrefixExpandableGlobalEntry >> completionMatchText [
 ]
 
 { #category : 'matching' }
-NECPrefixExpandableGlobalEntry >> implicitPrefix [ [
+NECPrefixExpandableGlobalEntry >> implicitPrefix [
 
 	^ implicitPrefix
 ]
-]
 
 { #category : 'matching' }
-NECPrefixExpandableGlobalEntry >> implicitPrefix: aString [ [
+NECPrefixExpandableGlobalEntry >> implicitPrefix: aString [
 
 	implicitPrefix := aString
-]
 ]

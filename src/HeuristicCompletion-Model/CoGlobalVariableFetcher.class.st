@@ -19,11 +19,13 @@ CoGlobalVariableFetcher >> completionClass: aClass [
 
 { #category : 'enumerating' }
 CoGlobalVariableFetcher >> entriesDo: aBlock [
+	|prefix|
+	prefix := self inferPrefix.
 
 	self systemNavigation
 		allGlobalNamesStartingWith: filter completionString
 		do: [ :e |
-				aBlock value: ((CoGlobalEntry contents: e node: astNode)
+				aBlock value: ((NECPrefixExpandableGlobalEntry contents: e node: astNode implicitPrefix: prefix)
 						 fetcherName: self class name;
 						 yourself) ]
 		caseSensitive: NECPreferences caseSensitive
@@ -32,6 +34,8 @@ CoGlobalVariableFetcher >> entriesDo: aBlock [
 { #category : 'enumerating' }
 CoGlobalVariableFetcher >> inferPrefix [
     | prefixes baseName packages |
+
+	completionClass ifNil: [ ^'' ].
 
     prefixes := Dictionary new.
 
@@ -56,7 +60,7 @@ CoGlobalVariableFetcher >> inferPrefix [
     ].
 
 	
-
+	prefixes isEmpty ifTrue: [ ^'' ].
     ^ (prefixes associations sorted: [ :a :b | a value > b value ]) first key
 ]
 
