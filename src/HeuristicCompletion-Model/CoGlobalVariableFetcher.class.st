@@ -18,16 +18,24 @@ CoGlobalVariableFetcher >> completionClass: aClass [
 ]
 
 { #category : 'enumerating' }
-CoGlobalVariableFetcher >> entriesDo: aBlock [
-	|prefix|
-	prefix := self inferPrefix.
-	self systemNavigation
-		allGlobalNamesStartingWith: prefix , filter completionString
-		do: [ :e |
-				aBlock value: ((NECPrefixExpandableGlobalEntry contents: e node: astNode implicitPrefix: prefix)
-						 fetcherName: self class name;
-						 yourself) ]
-		caseSensitive: NECPreferences caseSensitive
+CoGlobalVariableFetcher >> entriesDo: aBlock [ 
+    | prefix |
+    prefix := self inferPrefix.
+    completionClass ifNil: [ ^ self ].
+    completionClass package definedClasses do: [ :cls |
+        (cls name beginsWith: prefix , filter completionString)
+            ifTrue: [
+                aBlock value: ((NECPrefixExpandableGlobalEntry
+                    contents: cls name node: astNode implicitPrefix: prefix)
+                    fetcherName: self class name;
+                    yourself) ] ].
+    self systemNavigation
+        allGlobalNamesStartingWith: filter completionString
+        do: [ :e |
+            aBlock value: ((CoGlobalEntry contents: e node: astNode)
+                fetcherName: self class name;
+                yourself) ]
+        caseSensitive: NECPreferences caseSensitive
 ]
 
 { #category : 'enumerating' }
