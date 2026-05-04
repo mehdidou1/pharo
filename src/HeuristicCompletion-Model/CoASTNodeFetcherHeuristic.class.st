@@ -33,7 +33,6 @@ CoASTNodeFetcherHeuristic >> buildFetcherFor: aMessageNode inContext: aContext [
 
 { #category : 'requests' }
 CoASTNodeFetcherHeuristic >> fetcherFor: aMessageNode inContext: aContext [
-
 	| nextFetcher |
 	nextFetcher := self next fetcherFor: aMessageNode inContext: aContext.
 	^ (self appliesForNode: aMessageNode inContext: aContext)

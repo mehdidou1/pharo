@@ -21,7 +21,7 @@ CoCaseInsensitiveBeginsWithFilter class >> filterString: aString [
 
 { #category : 'testing' }
 CoCaseInsensitiveBeginsWithFilter >> accepts: aCandidate [
-    ^ aCandidate completionMatchText asLowercase beginsWith: completionString asLowercase
+    ^ aCandidate contents asLowercase beginsWith: completionString asLowercase
 ]
 
 { #category : 'testing' }
