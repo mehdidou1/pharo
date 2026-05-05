@@ -6,13 +6,8 @@ Each of my subclass will represent a specific kind of entity. For example a glob
 Class {
 	#name : 'CoEntry',
 	#superclass : 'Object',
-	#instVars : [
-		'contents',
-		'node',
-		'description',
-		'displayedContents',
-		'fetcherName'
-	],
+	#traits : 'TProperties',
+	#classTraits : 'TProperties classTrait',
 	#classVars : [
 		'OriginDisplayed',
 		'SpaceAfterCompletion'
@@ -24,6 +19,8 @@ Class {
 
 { #category : 'instance creation' }
 CoEntry class >> contents: aString node: aNode [
+	self properties.
+	
 	^ self new contents: aString node: aNode
 ]
 
@@ -68,7 +65,7 @@ CoEntry class >> spaceAfterCompletion: aBoolean [
 
 { #category : 'operations' }
 CoEntry >> <= aECEntry [
-	^ contents <= aECEntry contents
+	^ self propertyAt: #contents <= aECEntry contents
 ]
 
 { #category : 'operations' }
@@ -99,19 +96,19 @@ CoEntry >> browseCompletionItem [
 
 { #category : 'accessing' }
 CoEntry >> contents [
-	^ contents
+	^ self propertyAt: #contents
 ]
 
 { #category : 'accessing' }
 CoEntry >> contents: aString [
-	contents := aString
+	self propertyAt: #contents put: aString
 ]
 
 { #category : 'accessing' }
 CoEntry >> contents: aString node: aNode [
 
-	contents := aString.
-	node := aNode
+	self propertyAt: #contents put: aString.
+	self propertyAt: #node put: aNode.
 ]
 
 { #category : 'detail information' }
@@ -123,27 +120,29 @@ CoEntry >> createDescription [
 { #category : 'operations' }
 CoEntry >> description [
 
-	^ description ifNil: [ description := self createDescription ]
+	^ ((self propertyAt: #description)  ifNil: [ self propertyAt: #description put: self createDescription ])
 ]
 
 { #category : 'accessing' }
 CoEntry >> displayedContents [
 	"displayedContents offers the possibility to display a different information in the menu than the one returned when the user select an entry. By default displayContents is delegating to contents."
 
-	^ displayedContents ifNil: [ self contents ]
+	^ (self propertyAt: #displayedContents) ifNil: [ self contents ]
 ]
 
 { #category : 'accessing' }
 CoEntry >> displayedContents: aString [ 
 	"displayedContents offers the possibility to display a different information in the menu than the one returned when the user select an entry. By default displayContents is delegating to contents."
 
-	displayedContents := aString
+	self propertyAt: #displayedContents put: aString
 ]
 
 { #category : 'accessing' }
 CoEntry >> fetcher [
-
-	^ fetcherName
+	self 
+		deprecated: 'Use fetcherName instead' 
+		transformWith: '`@rec fetcher ' -> '`@rec fetcherName'.
+	^ self propertyAt: #fetcherName
 ]
 
 { #category : 'accessing' }
@@ -157,13 +156,13 @@ CoEntry >> fetcher: anObject [
 { #category : 'accessing' }
 CoEntry >> fetcherName [
 	
-	^ fetcherName
+	^ self propertyAt: #fetcherName
 ]
 
 { #category : 'accessing' }
 CoEntry >> fetcherName: aString [
 	
-	fetcherName := aString
+	self propertyAt: #fetcherName put: aString
 ]
 
 { #category : 'accessing' }
@@ -183,13 +182,13 @@ CoEntry >> label [
 { #category : 'accessing' }
 CoEntry >> node [
 
-	^ node
+	^ self propertyAt: #node
 ]
 
 { #category : 'accessing' }
 CoEntry >> node: anObject [
 
-	node := anObject
+	^ self propertyAt: #node put: anObject
 ]
 
 { #category : 'accessing' }
@@ -203,7 +202,7 @@ CoEntry >> printOn: aStream [
 	aStream
 		nextPutAll: self class name;
 		nextPut: $(;
-		nextPutAll: contents;
+		nextPutAll: (self propertyAt: #contents);
 		nextPut: $,.
 
 	self hightlightSymbol ifNotNil: [ aStream nextPutAll: self hightlightSymbol ].
