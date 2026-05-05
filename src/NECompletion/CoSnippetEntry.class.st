@@ -1,9 +1,6 @@
 Class {
 	#name : 'CoSnippetEntry',
 	#superclass : 'CoEntry',
-	#instVars : [
-		'shortString'
-	],
 	#category : 'NECompletion-Model',
 	#package : 'NECompletion',
 	#tag : 'Model'
@@ -18,7 +15,7 @@ CoSnippetEntry >> browseCompletionItem [
 CoSnippetEntry >> createDescription [
 	
 	^ CoEntryDescription 
-		label: 'Snippet replacement' title: shortString , ' into ' description: self contents
+		label: 'Snippet replacement' title: (self propertyAt: #shortString) , ' into ' description: self contents
 ]
 
 { #category : 'accessing' }
@@ -29,5 +26,5 @@ CoSnippetEntry >> rawLabel [
 { #category : 'private' }
 CoSnippetEntry >> shortString: aString [ 
 	
-	shortString := aString
+	self propertyAt: #shortString put: aString
 ]

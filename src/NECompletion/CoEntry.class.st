@@ -20,6 +20,9 @@ Class {
 { #category : 'instance creation' }
 CoEntry class >> contents: aString node: aNode [
 	self properties.
+	self propertyAt: #description put: nil. 
+	self propertyAt: #displayedContents put: nil.
+	self propertyAt: #fetcherName put: nil.
 	
 	^ self new contents: aString node: aNode
 ]
@@ -120,14 +123,20 @@ CoEntry >> createDescription [
 { #category : 'operations' }
 CoEntry >> description [
 
-	^ ((self propertyAt: #description)  ifNil: [ self propertyAt: #description put: self createDescription ])
+	self propertyAt: #description 
+		ifPresent: [ ^self propertyAt: #description ] 
+		ifAbsent: [ self propertyAt: #description put: self createDescription.
+			^ self propertyAt: #description
+			 ].
 ]
 
 { #category : 'accessing' }
 CoEntry >> displayedContents [
 	"displayedContents offers the possibility to display a different information in the menu than the one returned when the user select an entry. By default displayContents is delegating to contents."
 
-	^ (self propertyAt: #displayedContents) ifNil: [ self contents ]
+	 self propertyAt: #displayedContents 
+		ifPresent: [ ^self propertyAt: #displayedContents ] 
+		ifAbsent: [ ^self propertyAt: #contents. ].
 ]
 
 { #category : 'accessing' }

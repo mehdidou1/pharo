@@ -11,7 +11,6 @@ Class {
 
 { #category : 'enumerating' }
 CoInstanceVariableFetcher >> entriesDo: aBlock [
-
 	self completionClass instVarNames do: [ :e |
 			aBlock value: ((CoInstVarEntry contents: e node: astNode)
 					 fetcherName: self class name;

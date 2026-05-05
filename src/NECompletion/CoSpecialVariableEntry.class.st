@@ -11,5 +11,5 @@ Class {
 
 { #category : 'accessing' }
 CoSpecialVariableEntry >> label [
-	^ contents
+	^ self propertyAt: #contents
 ]

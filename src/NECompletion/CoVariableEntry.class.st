@@ -21,7 +21,7 @@ CoVariableEntry >> browseCompletionItem [
 { #category : 'detail information' }
 CoVariableEntry >> classOrNil [
 
-	^ self class environment at: contents ifAbsent: [ nil ].
+	^ self class environment at: (self propertyAt: #contents) ifAbsent: [ nil ].
 
 ]
 

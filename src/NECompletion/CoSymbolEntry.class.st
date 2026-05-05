@@ -12,7 +12,7 @@ Class {
 { #category : 'private' }
 CoSymbolEntry >> browseCompletionItem [
 	| class |
-	class := node propertyAt: #type ifAbsent: nil.
+	class := self propertyAt: #node ifPresent:  [self propertyAt: #type ] ifAbsent: [ nil ].
 	class ifNil: [ SystemNavigation new browseAllImplementorsOf: self selector. ^true].
 
 	^ self
@@ -110,5 +110,5 @@ CoSymbolEntry >> rawLabel [
 { #category : 'accessing' }
 CoSymbolEntry >> selector [
 
-	^ contents
+	^ self propertyAt: #contents
 ]

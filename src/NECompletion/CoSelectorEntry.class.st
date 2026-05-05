@@ -4,9 +4,6 @@ I represent a selector of a method
 Class {
 	#name : 'CoSelectorEntry',
 	#superclass : 'CoSymbolEntry',
-	#instVars : [
-		'selector'
-	],
 	#category : 'NECompletion-Model',
 	#package : 'NECompletion',
 	#tag : 'Model'
@@ -16,7 +13,7 @@ Class {
 CoSelectorEntry >> browseCompletionItem [
 
 	| class |
-	class := node receiver propertyAt: #type ifAbsent: nil.
+	class := ((self propertyAt: #node) receiver) propertyAt: #type ifAbsent: nil.
 	class ifNil: [
 			SystemNavigation new browseAllImplementorsOf: self selector.
 			^ true ].
@@ -35,8 +32,8 @@ CoSelectorEntry >> browseCompletionItem [
 CoSelectorEntry >> findMethodAndDo: foundBlock ifAbsent: notfoundBlock [
 
 	| theClass result implementors |
-	theClass := node isMessage
-		ifTrue: [ node receiver propertyAt: #type ifAbsent: nil ]
+	theClass := (self propertyAt: #node) isMessage
+		ifTrue: [ (self propertyAt: #node) receiver propertyAt: #type ifAbsent: nil ]
 		ifFalse: [ nil ].
 	result := theClass
 				ifNil: [implementors := self systemNavigation allImplementorsOf: self selector.
@@ -75,7 +72,7 @@ CoSelectorEntry >> implementorsDescription: aSymbol [
 { #category : 'accessing' }
 CoSelectorEntry >> label [
 
-	node isMessage ifFalse: [ ^ '' ].
+	(self propertyAt: #node) isMessage ifFalse: [ ^ '' ].
 	^ super label.
 ]
 
@@ -92,11 +89,11 @@ CoSelectorEntry >> rawLabel [
 { #category : 'accessing' }
 CoSelectorEntry >> selector [
 
-	^ selector ifNil: [ contents ]
+	 self propertyAt: #selector ifPresent: [ ^ self propertyAt: #selector ] ifAbsent: [ ^ self propertyAt: #contents ]
 ]
 
 { #category : 'accessing' }
 CoSelectorEntry >> selector: anObject [
 
-	selector := anObject
+	self propertyAt: #selector put: anObject
 ]

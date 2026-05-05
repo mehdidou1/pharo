@@ -310,7 +310,6 @@ NECMenuMorph >> drawBottomScrollArrowOn: aCanvas [
 { #category : 'drawing' }
 NECMenuMorph >> drawLine: index on: aCanvas rectangle: rectangle [
 	| necEntry font type string preString highlightRectangle |
-
 	necEntry := context entries at: index.
 	string := necEntry displayedContents.
 	preString := string asLowercase findString: context completionToken asLowercase.
