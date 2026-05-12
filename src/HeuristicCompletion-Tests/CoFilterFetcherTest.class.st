@@ -12,8 +12,8 @@ CoFilterFetcherTest >> setUp [
 	super setUp.
 	fetcher := CoInstanceVariableFetcher new.
 	fetcher completionClass: self completionClass.
-	fetcher filter: (CoCaseSensitiveBeginsWithFilter filterString: 'a') negated.
-	expectedElements := {
+		fetcher filter: (CoBeginsWithFilter caseSensitive: true filterString: 'a') negated.
+		expectedElements := {
 		CoInstVarEntry contents: 'b' node: nil.
 		CoInstVarEntry contents: 'c' node: nil. }
 ]

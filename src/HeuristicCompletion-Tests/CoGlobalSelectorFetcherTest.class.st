@@ -13,7 +13,7 @@ CoGlobalSelectorFetcherTest >> setUp [
 	self systemNavigation selectors: #( ma mb mc ab xx ).
 	fetcher := CoGlobalSelectorFetcher new.
 	fetcher systemNavigation: self systemNavigation.
-	fetcher filter: (CoCaseSensitiveBeginsWithFilter filterString: 'm').
+	fetcher filter: (CoBeginsWithFilter caseSensitive: true filterString: 'm').
 
 	expectedElements := {
 		                    ((CoSelectorEntry contents: 'ma' node: nil)

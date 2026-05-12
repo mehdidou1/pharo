@@ -12,7 +12,7 @@ CoFetcherWithNoResultsTest >> setUp [
 	super setUp.
 	fetcher := CoInstanceVariableFetcher new.
 	fetcher completionClass: self completionClass.
-	fetcher := fetcher filter: (CoCaseSensitiveBeginsWithFilter filterString: '*Non¨_exiuting')
+	fetcher := fetcher filter: (CoBeginsWithFilter caseSensitive: true filterString: '*Non¨_exiuting').
 ]
 
 { #category : 'tests' }

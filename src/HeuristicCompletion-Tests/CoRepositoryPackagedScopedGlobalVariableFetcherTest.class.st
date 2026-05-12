@@ -64,7 +64,7 @@ CoRepositoryPackagedScopedGlobalVariableFetcherTest >> setUp [
 		
 	package1 := CoMockPackage new. 
 	package1 name: 'P1-Core1'.
-	classesInP1 := { ai12 . ai13 . a11 . aa1 . completionClass}.
+	classesInP1 := { ai12 . ai13 . a11 . aa1 . completionClass }.
 	package1 definedClasses: classesInP1.
 	classesInP1 do: [:cl | cl package: package1]. 
 	
