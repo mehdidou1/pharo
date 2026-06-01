@@ -105,18 +105,13 @@ CoFetcher >> filteredEntriesDo: aBlock [
 	 A key point is also that the composite fetchers do not filter.
 	Note that the filter is shared amongst fetcher but one filter may decide 
 	to ignore it."
-
-
-	self filter requiresFallbackEnumeration
-		ifTrue: [ self fuzzyEntriesDo: [ :entry | (self filter fuzzyAccepts: entry) ifTrue: [ aBlock value: entry ] ] ]
-		ifFalse: [ self entriesDo: [ :entry | (self acceptsEntry: entry) ifTrue: [ aBlock value: entry ] ] ]
+self entriesDo: [ :entry | (self acceptsEntry: entry) ifTrue: [ aBlock value: entry ] ] 
 ]
 
 { #category : 'enumerating' }
-CoFetcher >> fuzzyEntriesDo: aBlock [ 
-	^ self subclassResponsibility
+CoFetcher >> fuzzyEntriesDo: aBlock [
 
-	
+	^ self subclassResponsibility
 ]
 
 { #category : 'private' }
@@ -187,6 +182,14 @@ CoFetcher >> withNarrowHistory [
 	^ CoNarrowHistoryFetcher new
 		decoree: self;
 		yourself
+]
+
+{ #category : 'composing' }
+CoFetcher >> withTolerance [
+
+	^ CoToleranceFetcher new
+		  decoree: self;
+		  yourself
 ]
 
 { #category : 'composing' }

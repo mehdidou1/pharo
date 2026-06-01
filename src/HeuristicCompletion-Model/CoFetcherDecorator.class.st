@@ -33,6 +33,11 @@ CoFetcherDecorator >> filter: aFilter [
 	decoree filter: aFilter
 ]
 
+{ #category : 'accessing' }
+CoFetcherDecorator >> fuzzyEntriesDo: aBlock [ 
+	decoree fuzzyEntriesDo: aBlock
+]
+
 { #category : 'resetting' }
 CoFetcherDecorator >> reset [
 

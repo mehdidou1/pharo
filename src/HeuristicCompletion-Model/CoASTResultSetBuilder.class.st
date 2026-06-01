@@ -56,9 +56,7 @@ CoASTResultSetBuilder >> configureFetcherForNode: aNode usingHeuristicAvoidingRe
 
 	| fetcher |
 	fetcher := heuristic fetcherFor: aNode inContext: completionContext.
-	^ self
-		configureFetcher: fetcher withoutRepetition withNarrowHistory
-		forNode: aNode
+	^ self configureFetcher: fetcher withoutRepetition withNarrowHistory withTolerance forNode: aNode
 ]
 
 { #category : 'accessing' }

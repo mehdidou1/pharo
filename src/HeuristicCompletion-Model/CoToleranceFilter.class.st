@@ -154,7 +154,7 @@ CoToleranceFilter class >> scoreForCandidate: aCandidateString token: aTokenStri
 		             ifFalse: [ candidate asLowercase ].
 	token := aBoolean
 		         ifTrue: [ token ]
-		         ifFalse: [ token asLowercase ]. 
+		         ifFalse: [ token asLowercase ].
 	(candidate beginsWith: token) ifTrue: [ ^ 0 ].
 	(self shouldTryFuzzyFor: token candidate: candidate tolerance: aTolerance) ifFalse: [ ^ 0 ].
 
@@ -192,12 +192,11 @@ CoToleranceFilter class >> shouldTryFuzzyFor: token candidate: candidate toleran
 
 { #category : 'testing' }
 CoToleranceFilter >> accepts: aCandidate [
-
-	^ (decoree accepts: aCandidate) or: [ self class enabled and: [ self fuzzyAccepts: aCandidate ]]
+	^ (decoree accepts: aCandidate) or: [ self class enabled and: [ self fuzzyAccepts: aCandidate ] ]
 ]
 
 { #category : 'testing' }
-CoToleranceFilter >> complementResults: aCollection [ 
+CoToleranceFilter >> complementResults: aCollection [
 
 	| exact fuzzy |
 	self requiresFallbackEnumeration ifFalse: [ ^ aCollection ].
@@ -206,25 +205,24 @@ CoToleranceFilter >> complementResults: aCollection [
 	fuzzy := OrderedCollection new.
 
 	aCollection do: [ :each |
-		(decoree accepts: each)
-			ifTrue: [ exact add: each ]
-			ifFalse: [ (self fuzzyAccepts: each) ifTrue: [ fuzzy add: each ] ] ].
+			(decoree accepts: each)
+				ifTrue: [ exact add: each ]
+				ifFalse: [ (self fuzzyAccepts: each) ifTrue: [ fuzzy add: each ] ] ].
 
 	fuzzy isEmpty ifTrue: [ ^ aCollection ].
 
 	fuzzy sort: [ :a :b |
-		| scoreA scoreB |
-		scoreA := self fuzzyScoreFor: a.
-		scoreB := self fuzzyScoreFor: b.
-		scoreA = scoreB
-			ifTrue: [ a contents <= b contents ]
-			ifFalse: [ scoreA < scoreB ] ].
+			| scoreA scoreB |
+			scoreA := self fuzzyScoreFor: a.
+			scoreB := self fuzzyScoreFor: b.
+			scoreA = scoreB
+				ifTrue: [ a contents <= b contents ]
+				ifFalse: [ scoreA < scoreB ] ].
 
 	^ OrderedCollection new
-		addAll: exact;
-		addAll: fuzzy;
-		yourself
-
+		  addAll: exact;
+		  addAll: fuzzy;
+		  yourself
 ]
 
 { #category : 'accessing' }

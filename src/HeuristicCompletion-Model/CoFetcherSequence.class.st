@@ -37,7 +37,14 @@ CoFetcherSequence >> filter: aFilter [
 
 { #category : 'enumerating' }
 CoFetcherSequence >> filteredEntriesDo: aBlock [
+	
 	subcompletions do: [ :completion | completion filteredEntriesDo: aBlock ]
+]
+
+{ #category : 'enumerating' }
+CoFetcherSequence >> fuzzyEntriesDo: aBlock [
+
+	subcompletions do: [ :completion | completion fuzzyEntriesDo: aBlock ]
 ]
 
 { #category : 'initialization' }
