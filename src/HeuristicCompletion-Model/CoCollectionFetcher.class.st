@@ -31,3 +31,9 @@ CoCollectionFetcher >> entriesDo: aBlock [
 
 	collection do: aBlock
 ]
+
+{ #category : 'enumerating' }
+CoCollectionFetcher >> fuzzyEntriesDo: aBlock [
+
+	self entriesDo: aBlock
+]

@@ -15,6 +15,12 @@ CoEmptyFetcher >> entriesDo: aBlock [
 	"Nothing"
 ]
 
+{ #category : 'enumerating' }
+CoEmptyFetcher >> fuzzyEntriesDo: aBlock [
+
+	self entriesDo: aBlock
+]
+
 { #category : 'testing' }
 CoEmptyFetcher >> isEmptyCompletionFetcher [
 

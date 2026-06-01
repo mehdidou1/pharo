@@ -34,6 +34,12 @@ CoMethodVariableFetcher >> entriesDo: aBlock [
 					 yourself) ]
 ]
 
+{ #category : 'enumerating' }
+CoMethodVariableFetcher >> fuzzyEntriesDo: aBlock [
+
+	self entriesDo: aBlock
+]
+
 { #category : 'accessing' }
 CoMethodVariableFetcher >> methodVariableNamesDo: aBlock [
 

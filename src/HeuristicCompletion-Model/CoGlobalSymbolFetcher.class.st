@@ -19,3 +19,12 @@ CoGlobalSymbolFetcher >> entriesDo: aBlock [
 					 fetcherName: self class name;
 					 yourself) ]
 ]
+
+{ #category : 'enumerating' }
+CoGlobalSymbolFetcher >> fuzzyEntriesDo: aBlock [
+
+	self systemNavigation allSymbolsStartingWith: filter completionString first asString do: [ :e |
+			aBlock value: ((CoSymbolEntry contents: e node: astNode)
+					 fetcherName: self class name;
+					 yourself) ]
+]

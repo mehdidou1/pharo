@@ -43,3 +43,12 @@ CoGlobalSelectorFetcher >> entriesDo: aBlock [
 					 fetcherName: self class name;
 					 yourself) ]
 ]
+
+{ #category : 'enumerating' }
+CoGlobalSelectorFetcher >> fuzzyEntriesDo: aBlock [
+
+	self systemNavigation allSelectorsStartingWith: filter completionString first asString do: [ :e |
+			aBlock value: ((CoSelectorEntry contents: e node: astNode)
+					 fetcherName: self class name;
+					 yourself) ]
+]

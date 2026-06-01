@@ -86,6 +86,11 @@ CoFetcher >> entriesDo: aBlock [
 ]
 
 { #category : 'resetting' }
+CoFetcher >> filter [
+	^ filter
+]
+
+{ #category : 'resetting' }
 CoFetcher >> filter: newFilter [
 
 	(newFilter isMoreNarrowThan: filter)
@@ -100,10 +105,18 @@ CoFetcher >> filteredEntriesDo: aBlock [
 	 A key point is also that the composite fetchers do not filter.
 	Note that the filter is shared amongst fetcher but one filter may decide 
 	to ignore it."
+
+
+	self filter requiresFallbackEnumeration
+		ifTrue: [ self fuzzyEntriesDo: [ :entry | (self filter fuzzyAccepts: entry) ifTrue: [ aBlock value: entry ] ] ]
+		ifFalse: [ self entriesDo: [ :entry | (self acceptsEntry: entry) ifTrue: [ aBlock value: entry ] ] ]
+]
+
+{ #category : 'enumerating' }
+CoFetcher >> fuzzyEntriesDo: aBlock [ 
+	^ self subclassResponsibility
+
 	
-	self entriesDo: [ :entry | 
-		(self acceptsEntry: entry) 
-			ifTrue: [ aBlock value: entry ] ]
 ]
 
 { #category : 'private' }
@@ -135,19 +148,19 @@ CoFetcher >> narrowFilter: aFilter narrowKey: aKey [
 
 { #category : 'fetching' }
 CoFetcher >> next [
-
 	^ self generator next
 ]
 
 { #category : 'fetching' }
 CoFetcher >> next: anInteger [
 
-	^ Array new: anInteger streamContents: [ :stream | | total last |
-		total := 0.
-		[ (last := self next) ifNotNil: [ :each |
-			stream nextPut: each.
-			total := total + 1 ] ]
-			doWhileTrue: [ total < anInteger and: [ last isNotNil ] ] ]
+	^ Array new: anInteger streamContents: [ :stream |
+			  | total last |
+			  total := 0.
+			  [
+				  (last := self next) ifNotNil: [ :each |
+						  stream nextPut: each.
+						  total := total + 1 ] ] doWhileTrue: [ total < anInteger and: [ last isNotNil ] ] ]
 ]
 
 { #category : 'resetting' }

@@ -67,6 +67,11 @@ CoPackageSelectorFetcher >> dependenciesOf: aString [
 ]
 
 { #category : 'accessing' }
+CoPackageSelectorFetcher >> fuzzyEntriesDo: aBlock [ 
+	self entriesDo: aBlock
+]
+
+{ #category : 'accessing' }
 CoPackageSelectorFetcher >> packageLocalSelectors: aBlock [
 
 	| selectors |

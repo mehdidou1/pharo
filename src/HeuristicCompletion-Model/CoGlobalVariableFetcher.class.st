@@ -24,5 +24,17 @@ CoGlobalVariableFetcher >> entriesDo: aBlock [
 				aBlock value: ((CoGlobalEntry contents: e node: astNode)
 						 fetcherName: self class name;
 						 yourself) ]
-		caseSensitive: NECPreferences caseSensitive
+		caseSensitive: false
+]
+
+{ #category : 'enumerating' }
+CoGlobalVariableFetcher >> fuzzyEntriesDo: aBlock [
+
+	self systemNavigation
+		allGlobalNamesStartingWith: filter completionString first asString
+		do: [ :e |
+				aBlock value: ((CoGlobalEntry contents: e node: astNode)
+						 fetcherName: self class name;
+						 yourself) ]
+		caseSensitive: false
 ]

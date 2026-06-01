@@ -141,6 +141,7 @@ CoToleranceFilter class >> scoreForCandidate: aCandidateString token: aTokenStri
 	"Return zero if the candidate matches the token.
 	
 	"
+
 	| candidate token maxSize maxEdits distance |
 	candidate := aCandidateString asString.
 	token := aTokenString asString.
@@ -149,13 +150,11 @@ CoToleranceFilter class >> scoreForCandidate: aCandidateString token: aTokenStri
 	candidate = token ifTrue: [ ^ 0 ].
 
 	candidate := aBoolean
-		ifTrue: [ candidate ]
-		ifFalse: [ candidate asLowercase ]
-		.
+		             ifTrue: [ candidate ]
+		             ifFalse: [ candidate asLowercase ].
 	token := aBoolean
-		ifTrue: [ token ]
-		ifFalse: [ token asLowercase ].
-
+		         ifTrue: [ token ]
+		         ifFalse: [ token asLowercase ]. 
 	(candidate beginsWith: token) ifTrue: [ ^ 0 ].
 	(self shouldTryFuzzyFor: token candidate: candidate tolerance: aTolerance) ifFalse: [ ^ 0 ].
 
@@ -163,10 +162,8 @@ CoToleranceFilter class >> scoreForCandidate: aCandidateString token: aTokenStri
 	maxEdits := (aTolerance * maxSize) ceiling.
 	maxEdits <= 0 ifTrue: [ ^ 0 ].
 
-	distance := self
-		damerauLevenshteinDistanceBetween: token
-		and: candidate
-		maxDistance: maxEdits.
+
+	distance := self damerauLevenshteinDistanceBetween: token and: candidate maxDistance: maxEdits.
 
 	distance ifNil: [ ^ 0 ].
 	^ distance asFloat / maxSize

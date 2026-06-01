@@ -40,3 +40,9 @@ CoPackageImplementedMessagesFetcher >> entriesDo: aBlock [
 		aBlock value: ((CoSelectorEntry contents: e node: astNode) 
 								fetcherName: self class name; yourself) ]
 ]
+
+{ #category : 'enumerating' }
+CoPackageImplementedMessagesFetcher >> fuzzyEntriesDo: aBlock [
+
+	self entriesDo: aBlock
+]

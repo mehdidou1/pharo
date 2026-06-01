@@ -53,6 +53,12 @@ CoClassBasedFetcher >> forHierarchy [
 		yourself
 ]
 
+{ #category : 'accessing' }
+CoClassBasedFetcher >> fuzzyEntriesDo: aBlock [
+
+	self entriesDo: aBlock
+]
+
 { #category : 'hierarchy-fetching' }
 CoClassBasedFetcher >> onSuperclass [
 

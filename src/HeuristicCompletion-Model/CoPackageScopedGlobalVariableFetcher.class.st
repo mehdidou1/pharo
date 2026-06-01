@@ -38,6 +38,11 @@ CoPackageScopedGlobalVariableFetcher >> entriesDo: aBlock [
 ]
 
 { #category : 'enumerating' }
+CoPackageScopedGlobalVariableFetcher >> fuzzyEntriesDo: aBlock [ 
+	self entriesDo: aBlock
+]
+
+{ #category : 'enumerating' }
 CoPackageScopedGlobalVariableFetcher >> packageLocalClasses: aBlock [
 
 	| homePackageClassNames |
