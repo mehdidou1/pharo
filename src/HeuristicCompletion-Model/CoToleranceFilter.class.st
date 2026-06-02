@@ -138,8 +138,12 @@ CoToleranceFilter class >> reset [
 
 { #category : 'algorithms' }
 CoToleranceFilter class >> scoreForCandidate: aCandidateString token: aTokenString caseSensitive: aBoolean tolerance: aTolerance [
-	"Return zero if the candidate matches the token.
-	
+	"The closer the value is to 0, the better the match between the candidate and the token
+	 Returns 0 if  * the candidate and the token don't start with the same caracter 
+						* Token or the candidate is empty
+						* The candidate starts exactly with the token
+						* The tolerance is not enabled, or the token size does not exceed the minimum size
+						* The keyword arity is not stable
 	"
 
 	| candidate token maxSize maxEdits distance |
@@ -170,20 +174,23 @@ CoToleranceFilter class >> scoreForCandidate: aCandidateString token: aTokenStri
 ]
 
 { #category : 'algorithms' }
-CoToleranceFilter class >> shouldTryFuzzyFor: token candidate: candidate tolerance: aTolerance [ 
+CoToleranceFilter class >> shouldTryFuzzyFor: token candidate: candidate tolerance: aTolerance [
+	" I verify if the fuzzy match is applicable or not
+	  I return false if : 	* Tolerance is disabled
+							 	* The Token or the candidate is empty
+								* The token size does not exceeed the minimum token length
+								* Thee keyword arity is not stable
+								* The first caracter of the candidate and the token does not match
+	  Otherwise I return true
+	"
 
 	| maxSize maxEdits |
 	(self enabled not or: [ aTolerance <= 0.0 ]) ifTrue: [ ^ false ].
 	token isEmpty ifTrue: [ ^ false ].
 	candidate isEmpty ifTrue: [ ^ false ].
-	token size < self minimumTokenSize ifTrue: [ ^ false ].
-
-	"Keep keyword arity stable"
+	token size < self minimumTokenSize ifTrue: [ ^ false ]. "Keep keyword arity stable"
 	((token includes: $:) or: [ candidate includes: $: ]) ifTrue: [
-		(token occurrencesOf: $:) = (candidate occurrencesOf: $:)
-			ifFalse: [ ^ false ] ].
-
-	"Cheap guardrails to avoid noisy matches"
+		(token occurrencesOf: $:) = (candidate occurrencesOf: $:) ifFalse: [ ^ false ] ]. "Cheap guardrails to avoid noisy matches"
 	token first = candidate first ifFalse: [ ^ false ].
 	maxSize := token size max: candidate size.
 	maxEdits := (aTolerance * maxSize) ceiling.
@@ -193,36 +200,6 @@ CoToleranceFilter class >> shouldTryFuzzyFor: token candidate: candidate toleran
 { #category : 'testing' }
 CoToleranceFilter >> accepts: aCandidate [
 	^ (decoree accepts: aCandidate) or: [ self class enabled and: [ self fuzzyAccepts: aCandidate ] ]
-]
-
-{ #category : 'testing' }
-CoToleranceFilter >> complementResults: aCollection [
-
-	| exact fuzzy |
-	self requiresFallbackEnumeration ifFalse: [ ^ aCollection ].
-
-	exact := OrderedCollection new.
-	fuzzy := OrderedCollection new.
-
-	aCollection do: [ :each |
-			(decoree accepts: each)
-				ifTrue: [ exact add: each ]
-				ifFalse: [ (self fuzzyAccepts: each) ifTrue: [ fuzzy add: each ] ] ].
-
-	fuzzy isEmpty ifTrue: [ ^ aCollection ].
-
-	fuzzy sort: [ :a :b |
-			| scoreA scoreB |
-			scoreA := self fuzzyScoreFor: a.
-			scoreB := self fuzzyScoreFor: b.
-			scoreA = scoreB
-				ifTrue: [ a contents <= b contents ]
-				ifFalse: [ scoreA < scoreB ] ].
-
-	^ OrderedCollection new
-		  addAll: exact;
-		  addAll: fuzzy;
-		  yourself
 ]
 
 { #category : 'accessing' }
@@ -290,8 +267,7 @@ CoToleranceFilter >> isMoreNarrowThan: anotherFilter [
 ]
 
 { #category : 'testing' }
-CoToleranceFilter >> requiresFallbackEnumeration [ 
-
-	^ self class  enabled
-		and: [ decoree completionString size >= self class minimumTokenSize ]
+CoToleranceFilter >> requiresFallbackEnumeration [
+	"Checks whether fuzzy match is enabled or not"
+	^ self class enabled and: [ decoree completionString size >= self class minimumTokenSize ]
 ]
