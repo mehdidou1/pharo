@@ -18,8 +18,11 @@ CoGlobalVariableFetcher >> completionClass: aClass [
 { #category : 'enumerating' }
 CoGlobalVariableFetcher >> entriesDo: aBlock [
 
-	self systemNavigation allGlobalNamesDo: [ :e |
+	self systemNavigation
+		allGlobalNamesStartingWith: filter completionString
+		do: [ :e |
 				aBlock value: ((CoGlobalEntry contents: e node: astNode)
 						 fetcherName: self class name;
 						 yourself) ]
+		caseSensitive: NECPreferences caseSensitive
 ]
